@@ -11,8 +11,9 @@ GlobalScope). The scope can automatically cancel children and it waits for their
 * `job.join()`- suspend until coroutine is finished
 * `job.cancel()`- cancel the job
 * `job.cancelAndJoin()`- ...
-* `CoroutineScope.isActive`- to check fi a coroutine has been cancelled. Has to be done "manually" in "
+* `CoroutineScope.isActive`- to check if a coroutine has been cancelled. Has to be done "manually" in "
   custom
+* `yield()` - can be used to check if the coroutine is interrupted
   coroutines". Because of that cancellation is said to be cooperative.
 * Use `finally` to close resources, wrap in `withContext(NonCancellable)` if the release of resources is blocking
 * `withTimeout` - schedule with timeout, throw `CancellationException` when interrupted
@@ -34,3 +35,11 @@ GlobalScope). The scope can automatically cancel children and it waits for their
 * Buffered channel - buffer size is set. Both operations can suspend
 * Conflated channel - a new element sent always overrides the old one.
 * `runTest{}` - allows running tests with a controlled clock. `currentTime` can be used to get the "fake" time.
+* `Dispatchers.Unconfined` - starts on the outer scope's until first suspension. Then it resumes on another thread.
+* `newSingleThreadContext(name: String)` - create a new dispatcher with a new, dedicated thread
+* `couroutineContext[Job]` - used to get the current job within a coroutine
+* `async(CoroutineName("test"))` - set a debug name of the coroutine
+* `launch(Dispatchers.Default + CoroutineName("test"))` - this is how one can combine different context elements
+* `ThreadLocal.asContextElement` can be used to keep the value of a given `ThreadLocal` and restore it every time the coroutine switches the context
+* `flow{}` - used to create `Flow<>`'s. Functions using it are not suspend. Values emitted by `emit()` and collected by `collect()`
+* 
