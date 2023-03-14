@@ -1,4 +1,4 @@
-Notes made when  going through https://kotlinlang.org/docs/coroutines-guide.html
+Notes made when going through https://kotlinlang.org/docs/coroutines-guide.html
 
 Structured concurrency - coroutines are launched only in a CoroutineScope. The coroutine scope is responsible for the
 structure and parent-child relationships between different coroutines. Coroutine context stores additional technical
@@ -40,6 +40,31 @@ GlobalScope). The scope can automatically cancel children and it waits for their
 * `couroutineContext[Job]` - used to get the current job within a coroutine
 * `async(CoroutineName("test"))` - set a debug name of the coroutine
 * `launch(Dispatchers.Default + CoroutineName("test"))` - this is how one can combine different context elements
-* `ThreadLocal.asContextElement` can be used to keep the value of a given `ThreadLocal` and restore it every time the coroutine switches the context
-* `flow{}` - used to create `Flow<>`'s. Functions using it are not suspend. Values emitted by `emit()` and collected by `collect()`
+* `ThreadLocal.asContextElement` can be used to keep the value of a given `ThreadLocal` and restore it every time the
+  coroutine switches the context
+* `flow{}` - used to create `Flow<>`'s. Functions using it are not suspend. Values emitted by `emit()` and collected
+  by `collect()`. Flows are cold. Alternatively, one can use `.asFlow()` extension and `flowOf()`. You can
+  use `map`, `filter`, etc. on flows but they can use suspending functions. These operators are cold too.
+* `transform()` - general operator that can `emit()` as many times as it wants
+* size limiting operators (e.g. `take`) cause throwing an exception
+* terminal operators (e.g. `toList`, `toSet`, `first`, `single`, `reduce`, `fold`, `collect`) are suspending
+* Collections of flow are performed sequentially, a value is emitted, then processed and collected. Only after that
+  another value is emitted.
+* Context preservation - collection is performed in the context of the calling coroutine. This is the default behaviour
+  of `flow{}` too. This means `emit()` cannot be called in other context by calling `withContext()`.
+* `flowOn()` - the right way to change the context of a `flow{}`. It creates a new coroutine to execute the upstream.
+* `buffer()` - run flow emitting code concurrently
+* `conflate()` - skip intermediate values, whenever a newer one is available. It drops emitted values when the collector
+  is too slow to process them.
+* `collectLatest()` - Cancel a slow collector and restart it every time a new value is emitted. There are
+  more `xxxLatest()` operators.
+* `zip()` - zip two flows (item #1 with item #1, item #2 with item #2, etc.)
+* `combine()` - transform the latest values of each of the flows, every time a value is emitted in any of the streams
+* `flatMapConcat()`, `flattenConcat` - used to join two flows in a sequential matter (the first one has to finish before
+  the second is collected)
+* `flatMapMerge`, `flattenMerge` - join two flows, but this time _concurrently_ (ASAP). Additional
+  parameter `concurrency` can be used to set the limit of max concurrent flows to be collected. The transformation
+  operation is called sequentially.
+* `flatMapLatest` - only transform the latest values, dropping the transformation for the previous ones
+* Flows collectors throw when the emitters throw. Try/catch can be used because of that.
 * 
