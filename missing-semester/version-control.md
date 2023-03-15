@@ -45,7 +45,7 @@ The entire history graph is immutable. But references are mutable.
 * `git log --all --graph --decorate` - nicer log, shown as a tree
 * `git checkout <sha|branch>`
 * `git diff <hash> <optional second hash> <filename>` - <hash> by default is HEAD
-* `git branch -vv` - list 
+* `git branch -vv` - list
 * `git branch <branchname>` - create branch
 * `git checkout <branchname>` - switch to a branch
 * `git checkout -b <branchname>` - create a branch and switch to it
@@ -53,8 +53,17 @@ The entire history graph is immutable. But references are mutable.
 * `git merge --abort`
 * `git mergetool`
 * `git merge --continue` - once the conflicts are resolved
-* `git remote <name> <url>` 
+* `git remote <name> <url>`
 * `git push <name of remote> <local branch>:<remote branch>`, when the upstream is set: `git push`
 * `git clone <remote> <directory>`
 * `git fetch <remote, not needed if one>`
 * `git pull` == git fetch; git merge
+* `git clone --shallow` - no version history, but downloads only the latest version
+* `git add -p <filename>` - interactive way of committing changes, it walks you through pieces of changes and asks if
+  you want to keep them
+* `git blame`
+* `git show <sha>` - get all the info about a commit
+* `git stash`/`git stash pop`
+* `git bisect` - can take a script to automate the checks
+* 
+* 
