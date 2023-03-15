@@ -77,4 +77,7 @@ GlobalScope). The scope can automatically cancel children, and it waits for thei
   exceptions.
 * `onCompletion()` - similar to `try/catch`'s `finally` but passes a nullable exception. It does not handle the exception. It sees all exceptions (in downstream too).
 * `launchIn(scope)` - non-blocking way to collect in a separate coroutine. Returns a Job.
+* Flow builder peforms `ensureActive()` when emitting values, but other operators don't
+* `cancel()` - cancels this scope
+* `cancellable()` - operator that returns a flow that checks cancellation each time an item is emitted upstream
 * 
