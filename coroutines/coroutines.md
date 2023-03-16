@@ -75,9 +75,23 @@ GlobalScope). The scope can automatically cancel children, and it waits for thei
 * `catch()` - catches exceptions from the upstream (not downstream or collector)
 * `onEach` - another operator. Can be used instead of `collect {..}` if we want to be able to .catch() on the
   exceptions.
-* `onCompletion()` - similar to `try/catch`'s `finally` but passes a nullable exception. It does not handle the exception. It sees all exceptions (in downstream too).
+* `onCompletion()` - similar to `try/catch`'s `finally` but passes a nullable exception. It does not handle the
+  exception. It sees all exceptions (in downstream too).
 * `launchIn(scope)` - non-blocking way to collect in a separate coroutine. Returns a Job.
 * Flow builder peforms `ensureActive()` when emitting values, but other operators don't
 * `cancel()` - cancels this scope
 * `cancellable()` - operator that returns a flow that checks cancellation each time an item is emitted upstream
+* `produce<T>(optionalChannelCapacity){}` - convenience method to create a channel. `send()` can be used inside to send
+  values.
+* `Channel.consumeEach{}` - can be used to consume all values.
+* pipeline - a pattern where one coroutine is producing a stream and another one consumes it and produces another stream
+* Fan-out - Single channel can be received by multiple processors to distribute workload. Each value will be sent only
+  once and
+  received be a single processor.
+* Fan-in - a single channel can be used by multiple producers.
+* Channels are fair - the first coroutine to call `receive()` gets the value
+* `ticket(delayMillis, initialDelayMillis)` - create a ticker channel - a channel that emits Unit every time a given
+  delay passes. It is aware of possible consumer pauses adn, by default, adjusts next produced element delay if a paused
+  occurs, trying to maintain a fixed rate od produced elements.
+*
 * 
