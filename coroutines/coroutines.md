@@ -92,6 +92,5 @@ GlobalScope). The scope can automatically cancel children, and it waits for thei
 * Channels are fair - the first coroutine to call `receive()` gets the value
 * `ticket(delayMillis, initialDelayMillis)` - create a ticker channel - a channel that emits Unit every time a given
   delay passes. It is aware of possible consumer pauses adn, by default, adjusts next produced element delay if a paused
-  occurs, trying to maintain a fixed rate od produced elements.
-*
-* 
+  occurs, trying to maintain a fixed rate od produced elements. Set `mode` to `TickerMode.FIXED_DELAY` to maintain a
+  fixed delay between elements.
